@@ -1,0 +1,139 @@
+.game-div {
+  position: absolute;
+  z-index: 999999999999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: none;
+  height: 100vh;
+}
+
+#game-header {
+  width: calc(100vw - 60px);
+  padding: 30px;
+  border-bottom: 2px solid white;
+  background: #2467a5;
+}
+
+#game-frame {
+  width: 100vw;
+  height: calc(100vh - 81px);
+  border: none;
+  background: white;
+}
+
+#frame-title {
+  color: white;
+  font-size: 17px;
+  width: 300px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+#frame-title {
+  mask-image: linear-gradient(90deg, #000 0%, #000 calc(100% - 24px), transparent);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+#frame-icon {
+  background: url(/icon/globe.svg);
+  display: inline-block;
+  width: 24px;
+  margin-right: 10px;
+  height: 24px;
+  filter: brightness(5000);
+  vertical-align: middle;
+}
+
+#frame-reload {
+  display: inline-flex;
+  color: white;
+  align-items: center;
+  padding: 5px;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  float: right;
+  transform: translateY(-10px);
+  font-size: 23px;
+  border: 2px solid white;
+  border-radius: 5px;
+  background: rgb(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+#frame-close {
+  display: inline-flex;
+  color: white;
+  align-items: center;
+  padding: 5px;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  float: right;
+  transform: translateY(-10px);
+  font-size: 20px;
+  border: 2px solid white;
+  border-radius: 5px;
+  background: rgb(255, 255, 255, 0.05);
+  margin-left: 10px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+#frame-full {
+  display: inline-flex;
+  color: white;
+  align-items: center;
+  padding: 5px;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  float: right;
+  transform: translateY(-10px);
+  font-size: 20px;
+  border: 2px solid white;
+  border-radius: 5px;
+  background: rgb(255, 255, 255, 0.05);
+  margin-right: 10px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+#frame-close svg, #frame-reload svg, #frame-full svg, #frame-forward svg, #frame-back svg {
+  transition: 0.3s ease;
+}
+
+#frame-close:hover svg, #frame-reload:hover svg, #frame-full:hover svg, #frame-forward:hover svg, #frame-back:hover svg {
+  transform: rotate(15deg);
+}
+
+#frame-close:hover, #frame-reload:hover, #frame-full:hover, #frame-forward:hover, #frame-back:hover {
+  background: rgb(255, 255, 255, 0.1);
+}
+
+#frame-forward, #frame-back {
+  display: inline-flex;
+  color: white;
+  align-items: center;
+  padding: 5px;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  float: right;
+  transform: translateY(-10px);
+  font-size: 20px;
+  border: 2px solid white;
+  border-radius: 5px;
+  background: rgb(255, 255, 255, 0.05);
+  margin-right: 10px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+
+#frame-forward {
+  margin-right: 50px;
+}

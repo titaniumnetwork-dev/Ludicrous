@@ -9,7 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tomphttp/bare-server-node": "^1.0.2-beta-readme5",
+    "express": "^4.18.1",
     "next": "12.2.0",
+    "next-absolute-url": "^1.2.2",
+    "next-pwa": "^5.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",

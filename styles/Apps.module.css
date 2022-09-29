@@ -13,13 +13,16 @@
   border: 2px solid #ccc;
   border-radius: 6px;
   position: absolute;
-  top: calc(50% - 150px);
+  top: calc(50%);
+  overflow-y: auto;
+  height: 140px;
   left: 50%;
   background: #2467a5;
   width: 60%;
   text-align: center;
   transform: translate(-50%, -50%);
   z-index: 1;
+  transition: 0.25s ease height;
 }
 
 .main-page-about-init {
@@ -31,6 +34,7 @@
   right: 10px;
   cursor: pointer;
   font-size: 23px;
+  z-index: 999;
 }
 
 .main-page-apps-init {
@@ -42,8 +46,178 @@
   left: 10px;
   cursor: pointer;
   font-size: 23px;
+  z-index: 999;
+}
+
+.main-page-about-init:hover, .main-page-apps-init:hover {
+  transform: scale(1.1);
+}
+
+.main-page-about-init, .main-page-apps-init {
+  transition: 0.15s ease;
 }
 
 .app {
+  width: 180px;
+  transition: 0.2s ease;
+  height: 234px;
+  cursor: pointer;
+  padding: 10px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  position: relative;
+  margin-bottom: 10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app h3 {
+  color: white;
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 20px;
+  width: 100%;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.app:hover {
+  background: rgb(255, 255, 255, 0.1);
+}
+
+.app img {
+  width: 90% !important;
+  height: auto !important;
+  margin-bottom: 50px !important;
+  max-height: 180px !important;
+  background: white;
+  border-radius: 3px;
+}
+
+#inside-content-scroller {
+  min-height: calc(100% + 1px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition: 0.15s ease;
+  opacity: 0;
+}
+
+#main-page-content::-webkit-scrollbar {
+  width: 3px;
+}
+
+#main-page-content::-webkit-scrollbar-thumb {
+  background: white;
+  border-radius: 3px;
+}
+
+#main-page-content::-webkit-scrollbar-track {
+  background: #2467a5;
+}
+
+#main-page-content h2 {
+  user-select: none;
+}
+
+#main-page-content h2, #main-page-content h1, #main-page-content h5 {
+  color: white;
+}
+
+#no-bottom-margin {
+  margin-bottom: 0;
+}
+
+#main-page-content h5, #main-page-content h2 {
+  width: 50%;
+  margin: auto;
+  text-align: left;
+}
+
+.type-sep {
+  width: 50%;
+  background: white;
+}
+
+.apps-hidden {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.down-chevron {
+  vertical-align: bottom;
+  margin-top: 6px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: 0.1s ease;
+}
+
+#games-over {
+  color: white;
+  columns: 4 auto;
+  flex-direction: row;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+}
+
+#launch-over {
   
+}
+
+#exploits-over {
+  
+}
+
+#credits-over {
+  
+}
+
+#exploits-over, #launch-over, #games-over, #credits-over {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  height: 0;
+}
+
+.visible {
+  height: 100% !important;
+}
+
+.toggle-chevron {
+  vertical-align: middle;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.flip-chevron {
+  transform: rotate(180deg);
+}
+
+.bdesc {
+  color: #fff;
+  border-bottom: 0;
+  position: absolute;
+  overflow-wrap: anywhere;
+  white-space: break-spaces;
+  margin-top: 35px;
+  width: calc(100% - 20px);
+  margin-bottom: 2px;
+}
+
+.smol-exp-div {
+  width: min-content;
+  height: auto;
+  display: inline-flex;
 }

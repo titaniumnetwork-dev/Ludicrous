@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Loading...</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+      
+      body, html {
+        margin: 0;
+        background: linear-gradient(-45deg, #747474, #4d5061, rgba(0 93 172));
+        background-size: 300% !important;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Roboto', sans-serif;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Initiating Proxies...</h1>
+    <script>
+      window.status = function(e) {
+        document.querySelector('h1').innerText = e;
+      }
+    </script>
+  </body>
+</html>

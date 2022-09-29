@@ -1,35 +1,41 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import { IoAppsSharp } from "react-icons/io5";
-import Image from 'next/image'
-import { useState } from 'react'
-import styles from '../styles/Home.module.css'
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
 import Script from 'next/script';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 
-const Route: NextPage = ( { config } ) => {
+const g: any = global || {};
+
+const Route: NextPage = ( { config }: any ): any => {
   if (global.window) {
     
   }
   
   const Router = useRouter();
-
+  
+  var urlEnc = config.config[config.proxy].encodeUrl;
+  
   return (
     <>
-      <Script>
+      <Script id="script-route">
         {`
-          location.href = "${config.config[config.proxy].prefix+Router.query.query}"
+          (async function() {
+            if ('serviceWorker' in navigator) {
+            
+              var xor = {key: 2};
+              var enc = (e) => ${urlEnc.toString()}(e).replace(new RegExp("\\/$", "g"), '');
+
+              async function init() {if (window.openFrame) await window.openFrame("${config.config[config.proxy].prefix}"+enc(new self.URLSearchParams(location.search).get('query')).replace(/\\/$/g, ''), true);document.querySelector('iframe').removeEventListener('load', init)};
+              await init();
+            }
+          })();
         `}
       </Script>
     </>
-  )
+  );
 }
 
-Route.getInitialProps = ({ req }) => {
-  return {}
-}
+/*Route.getInitialProps = (load) => {
+  console.log(load)
+  return load
+}*/
 
 export default Route;

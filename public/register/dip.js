@@ -1,5 +1,10 @@
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js', {scope: '/'})
-
-  location.reload()
-}
+(async function() {
+  if (self.ludicrous&&self.ludicrous.sw) {
+    (await self.ludicrous.sw());
+    await navigator.serviceWorker.ready;
+  } 
+  
+  if ('serviceWorker' in navigator) {
+    setTimeout(`location.reload()`, 100);
+  }
+})();

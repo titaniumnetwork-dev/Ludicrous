@@ -25,6 +25,7 @@
   position: absolute;
   top: calc(50%);
   left: 50%;
+  height: 140px;
   background: #2467a5;
   width: 60%;
   text-align: center;
@@ -52,6 +53,14 @@
   left: 10px;
   cursor: pointer;
   font-size: 23px;
+}
+
+.main-page-about-init:hover, .main-page-apps-init:hover {
+  transform: scale(1.1);
+}
+
+.main-page-about-init, .main-page-apps-init {
+  transition: 0.15s ease;
 }
 
 .main-title {
@@ -117,6 +126,8 @@
   position: relative;
   text-align: center;
   margin-bottom: 10px;
+  transition: 0.15s ease;
+  opacity: 0;
 }
 
 #form {

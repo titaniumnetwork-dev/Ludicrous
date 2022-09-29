@@ -7,3 +7,11 @@ body {
   font-family: Roboto, 'sans-serif';
   overflow: hidden;
 }
+
+input::-webkit-calendar-picker-indicator {
+  display: none !important;
+}
+
+canvas {
+  z-index: 1 !important;
+}

@@ -1,14 +1,14 @@
 if (!self.__DIP) self.__DIP={};
 
 self.__DIP.config = {
-  prefix: '/service/dip/',
-  encoding: 'base64',
+  prefix: '/~/dip/',
+  encoding: 'xor',
   ws: true,
   cookies: true,
   worker: true,
   bare: {
     version: 2,
-    path: 'https://uv.holyub.xyz/',
+    path: 'https://tomp.app/',
   },
   tab: {
     title: 'Dynamic Interception Proxy',

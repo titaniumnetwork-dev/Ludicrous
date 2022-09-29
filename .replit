@@ -1,8 +1,7 @@
 entrypoint = "index.js"
 
-hidden = [".config", ".next", ".swc"]
-
-run = "npm run dev"
+run = "npm run build && npm start"
+#run = "npm run dev"
 
 [[hints]]
 regex = "Error \\[ERR_REQUIRE_ESM\\]"
