@@ -11,19 +11,19 @@
 #game-header {
   width: calc(100vw - 60px);
   padding: 30px;
-  border-bottom: 2px solid white;
-  background: #2467a5;
+  border-bottom: 2px solid var(--text-color);
+  background: var(--main-bg);
 }
 
 #game-frame {
   width: 100vw;
   height: calc(100vh - 81px);
   border: none;
-  background: white;
+  background: var(--page-bg);
 }
 
 #frame-title {
-  color: white;
+  color: var(--text-color);
   font-size: 17px;
   width: 300px;
   overflow: hidden;
@@ -48,7 +48,7 @@
 
 #frame-reload {
   display: inline-flex;
-  color: white;
+  color: var(--text-color);
   align-items: center;
   padding: 5px;
   justify-content: center;
@@ -57,7 +57,7 @@
   float: right;
   transform: translateY(-10px);
   font-size: 23px;
-  border: 2px solid white;
+  border: 2px solid var(--text-color);
   border-radius: 5px;
   background: rgb(255, 255, 255, 0.05);
   cursor: pointer;
@@ -66,7 +66,7 @@
 
 #frame-close {
   display: inline-flex;
-  color: white;
+  color: var(--text-color);
   align-items: center;
   padding: 5px;
   justify-content: center;
@@ -75,7 +75,7 @@
   float: right;
   transform: translateY(-10px);
   font-size: 20px;
-  border: 2px solid white;
+  border: 2px solid var(--text-color);
   border-radius: 5px;
   background: rgb(255, 255, 255, 0.05);
   margin-left: 10px;
@@ -85,7 +85,7 @@
 
 #frame-full {
   display: inline-flex;
-  color: white;
+  color: var(--text-color);
   align-items: center;
   padding: 5px;
   justify-content: center;
@@ -94,7 +94,7 @@
   float: right;
   transform: translateY(-10px);
   font-size: 20px;
-  border: 2px solid white;
+  border: 2px solid var(--text-color);
   border-radius: 5px;
   background: rgb(255, 255, 255, 0.05);
   margin-right: 10px;
@@ -116,7 +116,7 @@
 
 #frame-forward, #frame-back {
   display: inline-flex;
-  color: white;
+  color: var(--text-color);
   align-items: center;
   padding: 5px;
   justify-content: center;
@@ -125,7 +125,7 @@
   float: right;
   transform: translateY(-10px);
   font-size: 20px;
-  border: 2px solid white;
+  border: 2px solid var(--text-color);
   border-radius: 5px;
   background: rgb(255, 255, 255, 0.05);
   margin-right: 10px;

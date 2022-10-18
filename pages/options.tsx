@@ -14,6 +14,8 @@ const Close: Function = () => {
   }
 }
 
+const g: any = global || {};
+
 const upChevron: any = function() {
   var el: any = document.getElementsByClassName(styles['down-chevron']);
 
@@ -100,6 +102,20 @@ const Options: NextPage = ({particles}: any) => {
     var main: any = function() {
       (document.getElementById(styles['main-page-content'])||document.body).scrollTop = 1;
       (document.getElementById(styles['inside-content-scroller'])||document.body).style.opacity = '1';
+
+      var el: any = (document.getElementById('theme-select')||document.createElement('input'));
+
+      el.value = g.localStorage.getItem('__lud$theme')||'classic';
+  
+      el.onchange = ((e: any)=>{var b: any = document.querySelector('#theme-select');g.localStorage.setItem('__lud$theme', b.value);g.window.__lud$theme=b.value;b.value=b.value});
+
+      var el2: any = (document.getElementById('engine-select')||document.createElement('input'));
+
+      el2.value = g.localStorage.getItem('__lud$engine')||'https://www.google.com/search?q=';
+
+      var el3: any = (document.getElementById('stealth-select')||document.createElement('input'));
+
+      el3.value = g.localStorage.getItem('__lud$method')||'stealth';
     }
     
     window.addEventListener('load', function(e: any) {
@@ -188,9 +204,68 @@ const Options: NextPage = ({particles}: any) => {
               <div className={styles['settings-box']}>
                 <h2>Theme</h2>
   
-                <select value="light" onChange={()=>{}}>
+                <select id="theme-select" className={styles['theme-select']}>
+                  <option value="classic"> 
+                    Classic
+                  </option>
                   <option value="light"> 
                     Light
+                  </option>
+                  <option value="dark"> 
+                    Dark
+                  </option>
+                  <option value="fracital"> 
+                    Fracital
+                  </option>
+                  <option value="illusive"> 
+                    Illusive
+                  </option>
+                </select>
+              </div>
+
+              <div className={styles['settings-box']}>
+                <h2>Search Engine</h2>
+  
+                <select id="engine-select" className={styles['engine-select']} onChange={(e:any)=>{
+                  var el: any = document.getElementById('engine-select');
+                  g.localStorage.setItem('__lud$engine', el.value)
+                }}>
+                  <option value="https://www.google.com/search?q=">
+                    Google 
+                  </option>
+                  <option value="https://duckduckgo.com/?q="> 
+                    DuckDuckGo
+                  </option>
+                  <option value="https://search.brave.com/search?q=">
+                    Brave
+                  </option>
+                  <option value="https://www.bing.com/search?q="> 
+                    Bing
+                  </option>
+                </select>
+              </div>
+
+              <div className={styles['settings-box']}>
+                <h2>About:Blank</h2>
+
+                <button onClick={()=>{g.ludicrous.blank()}} className={styles['settings-button']}>
+                  Activate
+                </button>
+              </div>
+
+              <div className={styles['settings-box']}>
+                <h2>Stealth</h2>
+  
+                <select id="stealth-select" className={styles['theme-select']} onChange={()=>{
+                  var el: any = document.getElementById('stealth-select');
+
+                  localStorage.setItem('__lud$method', el.value||'stealth');
+                }}>
+                  <option value="stealth"> 
+                    On
+                  </option>
+                  <option value="normal"> 
+                    Off
                   </option>
                 </select>
               </div>

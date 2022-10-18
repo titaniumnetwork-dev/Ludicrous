@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+@import url('/font/index.css');
 
 html,
 body {
@@ -14,4 +14,39 @@ input::-webkit-calendar-picker-indicator {
 
 canvas {
   z-index: 1 !important;
+}
+
+*[data-theme="classic"] {
+  --page-bg: linear-gradient(-45deg, #747474, #4d5061, rgba(0 93 172));
+  --main-bg: #2467a5;
+  --text-color: white;
+  --placeholder: #dedede;
+}
+
+*[data-theme="light"] {
+  --page-bg: linear-gradient(-45deg,#d0d0d0,#87888e,#3770a0);
+  --main-bg: #4f86b9;
+  --text-color: white;
+  --placeholder: #dedede;
+}
+
+*[data-theme="dark"] {
+  --page-bg: linear-gradient(-45deg,#000000,#000000,#114067);
+  --main-bg: #091b2c;
+  --text-color: white;
+  --placeholder: #dedede;
+}
+
+*[data-theme="fracital"] {
+  --page-bg: linear-gradient(-45deg,#000,#222,#ff77fc);
+  --main-bg: #282828;
+  --text-color: #ff77fc;
+  --placeholder: #dedede;
+}
+
+*[data-theme="illusive"] {
+  --page-bg: linear-gradient(-45deg,#000,#232323,#808080);
+  --main-bg: #181818;
+  --text-color: white;
+  --placeholder: #dedede;
 }

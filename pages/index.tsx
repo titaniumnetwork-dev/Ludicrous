@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { IoAppsOutline, IoSettingsOutline } from "react-icons/io5";
-import { FaGithub, FaEyeSlash } from "react-icons/fa";
+import { FaGithub, FaEyeSlash, FaEye } from "react-icons/fa";
 import styles from '../styles/Home.module.css'
 import { loadFull } from "tsparticles";
 import { useRouter } from 'next/router';
@@ -24,9 +24,6 @@ if (global.window) {
         var url = (e.target.value).toString();
         
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/sw.js', {scope: '/service'});
-        
-          location.href = '/service/uv/'+encodeURIComponent(url);
         } else {
           alert('ServiceWorker not supported');
         }
@@ -43,6 +40,26 @@ const formSubmit: any = (e: any) => {
 
   g.openFrame('/route?query='+(val));
 }
+
+const stealthOn: any = () => {
+  const eyeOpen: any = document.getElementById('eye-open');
+  const eyeClosed: any = document.getElementById('eye-closed');
+
+  eyeClosed.style.display = 'block';
+  eyeOpen.style.display = 'none';
+  
+  localStorage.setItem('__lud$method', 'stealth')
+}
+
+const stealthOff: any = () => {
+  const eyeOpen: any = document.getElementById('eye-open');
+  const eyeClosed: any = document.getElementById('eye-closed');
+
+  eyeOpen.style.display = 'block';
+  eyeClosed.style.display = 'none';
+
+  localStorage.setItem('__lud$method', 'normal')
+}
   
 const Home: NextPage = ({ particles }: any) => {
   var Router = useRouter();
@@ -51,6 +68,17 @@ const Home: NextPage = ({ particles }: any) => {
   if (global.window) {
     var main: any = function() {
       (document.getElementById(styles['main-page-init'])||document.body).style.opacity = '1';
+
+      var inputEl: any = document.getElementById(styles["main-input"]);
+      inputEl.oninput = omniBox;
+
+      if (localStorage.getItem('__lud$method')=='normal') {
+        const eyeOpen: any = document.getElementById('eye-open');
+        const eyeClosed: any = document.getElementById('eye-closed');
+      
+        eyeOpen.style.display = 'block';
+        eyeClosed.style.display = 'none';
+      }
     }
     
     window.addEventListener('load', function(e: any) {
@@ -93,6 +121,39 @@ const Home: NextPage = ({ particles }: any) => {
     }
   }
 
+  const omniBox: any = async (e: any) => {
+    if ((!e.inputType&&!e.data)&&(document.getElementById('defaults')!.innerHTML!=='<option value="https://discord.com">Discord</option><option value="https://youtube.com">Youtube</option><option value="https://reddit.com">Reddit</option><option value="https://play.geforcenow.com/mall">GeForce Now</option>')) {
+      var el: any = document.getElementById(styles['form']);
+      el.submit();
+      return false;
+    }
+    
+    var val: any = document.getElementById(styles["main-input"]);
+    var value = val.value+'';
+
+    if (value==''&&!value) return document.getElementById('defaults')!.innerHTML='<option value="https://discord.com">Discord</option><option value="https://youtube.com">Youtube</option><option value="https://reddit.com">Reddit</option><option value="https://play.geforcenow.com/mall">GeForce Now</option>';
+    
+    var req = await fetch('/api/bare/v2/', {
+      method: 'GET',
+      headers: {
+        'x-bare-host': 'duckduckgo.com',
+        'x-bare-headers': JSON.stringify({Host: 'duckduckgo.com'}),
+        'x-bare-path': '/ac/?q='+encodeURIComponent(value),
+        'x-bare-port': '443',
+        'x-bare-protocol': 'https:',
+      }
+    });
+
+    if (value==val.value) {
+      var list = await req.json();
+      var datalist: any = document.getElementById('defaults');
+
+      datalist.innerHTML = list.map((entry: any) => {
+        return `<option value="${entry.phrase}" onclick="alert('hi')">${entry.phrase}</option>`
+      }).join('');
+    }
+  }
+  
   const particlesInit: any = async (main: any) => {await loadFull(main)};
 
   const particlesLoaded: any = () => {};
@@ -117,7 +178,7 @@ const Home: NextPage = ({ particles }: any) => {
         <div id={styles['main-page-content']}>
           
           <div onClick={Apps} className={styles["main-page-apps-init"]} id="apps-init"><IoAppsOutline /></div>
-          <div className={styles["main-page-about-init"]} id={"ab-cloak"} onClick={Settings}><IoSettingsOutline /></div>
+          <div className={styles["main-page-about-init"]} id="ab-cloak" onClick={Settings}><IoSettingsOutline /></div>
 
           <div id={styles["main-page-init"]}>
             <h1 className={styles["main-title"]}><span>Ludicrous</span> <FaGithub style={{"cursor": "pointer"}} onClick={(e) => {window.open('https://github.com/ludicrousdevelopment/ludi');}} /></h1>
@@ -130,7 +191,8 @@ const Home: NextPage = ({ particles }: any) => {
                 <option value="https://reddit.com">Reddit</option>
                 <option value="https://play.geforcenow.com/mall">GeForce Now</option>
               </datalist>
-              <div className={styles["main-page-stealth-switch"]}><FaEyeSlash /></div>
+              <div id="eye-closed" className={styles["main-page-stealth-switch"]} onClick={stealthOff} title="stealth mode is on"><FaEyeSlash /></div>
+              <div id="eye-open" style={{display:'none'}} className={styles["main-page-stealth-switch"]} onClick={stealthOn} title="stealth mode is off"><FaEye /></div>
             </form>
           </div>
         </div>

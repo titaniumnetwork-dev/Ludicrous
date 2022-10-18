@@ -14,22 +14,32 @@ const Route: NextPage = ( { config }: any ): any => {
   var urlEnc = config.config[config.proxy].encodeUrl;
   
   return (
-    <>
-      <Script id="script-route">
-        {`
-          (async function() {
-            if ('serviceWorker' in navigator) {
-            
-              var xor = {key: 2};
-              var enc = (e) => ${urlEnc.toString()}(e).replace(new RegExp("\\/$", "g"), '');
+    <Script id="script-route">
+      {`
+        (async function() {
+          const engine = localStorage.getItem('__lud$engine')||'https://www.google.com/search?q=';
+          
+          if ('serviceWorker' in navigator) {
+          
+            var xor = {key: 2};
+            var enc = (e) => ${urlEnc.toString()}(e).replace(new RegExp("\\/$", "g"), '');
 
-              async function init() {if (window.openFrame) await window.openFrame("${config.config[config.proxy].prefix}"+enc(new self.URLSearchParams(location.search).get('query')).replace(/\\/$/g, ''), true);document.querySelector('iframe').removeEventListener('load', init)};
-              await init();
+            var url = new self.URLSearchParams(location.search).get('query');
+
+            if (!url.startsWith('https:')&&!url.startsWith('http:')) {
+              url = engine+encodeURIComponent(url);
             }
-          })();
-        `}
-      </Script>
-    </>
+
+            if (localStorage.getItem('__lud$method')=='normal') {
+              return location.href = "${config.config[config.proxy].prefix}"+enc(url).replace(/\\/$/g, '');
+            }
+
+            async function init() {if (window.openFrame) await window.openFrame("${config.config[config.proxy].prefix}"+enc(url).replace(/\\/$/g, ''), true);document.querySelector('iframe').removeEventListener('load', init)};
+            await init();
+          } else window.history.back();
+        })();
+      `}
+    </Script>
   );
 }
 

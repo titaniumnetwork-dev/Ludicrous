@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const withPWA = require('next-pwa')({
   dest: 'public',
+  swSrc: 'service-worker.js',
+  sw: 'arc-sw.js',
   fallbacks: {
     
   },
@@ -30,14 +32,7 @@ const nextConfig = withPWA({
   },
   async rewrites() {
     return [
-      {
-        source: '/bare/:path*',
-        destination: '/api/bare/:path*',
-      },
-      {
-        source: '/gfiles/:path*',
-        destination: 'https://binbashbanana.github.io/gfiles/gfiles/:path*'
-      }
+      
     ]
   },
 });

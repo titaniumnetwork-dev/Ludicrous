@@ -1,5 +1,5 @@
 .main {
-  background: linear-gradient(-45deg, #747474, #4d5061, rgba(0 93 172));
+  background: var(--page-bg);
   background-size: 300%;
   height: 100vh;
   width: 100vw;
@@ -14,7 +14,7 @@
 }
 
 .main input::placeholder {
-  color: #fff;
+  color: var(--text-color);
   opacity: 0.8;
 }
 
@@ -26,7 +26,7 @@
   top: calc(50%);
   left: 50%;
   height: 140px;
-  background: #2467a5;
+  background: var(--main-bg);
   width: 60%;
   text-align: center;
   transform: translate(-50%, -50%);
@@ -36,7 +36,7 @@
 .main-page-about-init {
   width: 25px;
   height: 25px;
-  color: white;
+  color: var(--text-color);
   position: absolute;
   top: 10px;
   right: 10px;
@@ -47,7 +47,7 @@
 .main-page-apps-init {
   width: 25px;
   height: 25px;
-  color: white;
+  color: var(--text-color);
   position: absolute;
   top: 10px;
   left: 10px;
@@ -64,7 +64,7 @@
 }
 
 .main-title {
-  color: white;
+  color: var(--text-color);
   font-size: 30px;
   margin-top: 0;
   margin-bottom: 0;
@@ -77,9 +77,9 @@
   width: calc(100% - 24px);
   padding: 10px;
   background: none;
-  border: #fff solid 3px;
+  border: var(--text-color) solid 3px;
   border-radius: 3px;
-  color: #fff;
+  color: var(--text-color);
   margin-bottom: 2px;
   outline: none;
   transition: 0.25s ease;
@@ -92,7 +92,7 @@
 .main-desc {
   font-size: 20px;
   font-weight: 100;
-  color: white;
+  color: var(--text-color);
   margin-bottom: 19px;
   margin-top: 10px;
 }
@@ -111,7 +111,7 @@
 .main-page-stealth-switch {
   width: 20px;
   height: auto;
-  color: white;
+  color: var(--text-color);
   position: absolute;
   top: 50%;
   right: 12px;

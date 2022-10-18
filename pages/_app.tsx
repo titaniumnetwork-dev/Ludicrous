@@ -51,6 +51,15 @@ function MyApp({ Component, pageProps }: AppProps) {
   g.ludicrous = {
     mode: process.env.NODE_ENV,
     framework: 'next',
+    blank: (e: any) => {
+      var win: any = window.open();
+
+      win.document.write(`<head><title>Classes</title><link rel="icon" href="${location.origin}/icon/classroom.png"></head><body><iframe src="${location.href}" style="width:100vw;height:100vh;border:0;outline:0;position:absolute;top:0;left:0;z-index:9999999;"></iframe></body>`);
+
+      win.document.close();
+
+      return win;
+    },
     reload: (e: any) => {
       if (g.router) {
         g.router.route()
@@ -188,7 +197,22 @@ function MyApp({ Component, pageProps }: AppProps) {
           return el.href;
         }
       });
-    } catch {};                            
+    } catch {};     
+
+    try {
+      Object.defineProperty(window, '__lud$theme', {
+        configurable: true,
+        set(val) {
+          var el: any = document.querySelector('*[data-theme]');
+
+          if (el&&el.dataset.theme!==val) el.dataset.theme = val;
+        },
+        get() {
+          var el: any = document.querySelector('*[data-theme]');
+          return el.dataset.theme;
+        }
+      });
+    } catch {};     
 
     var win: any = window;
     
@@ -259,11 +283,19 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   const closeFrame: any = function(e: any) {
+    var og = g.history.state.as;
     g.history.back();
     var e: any = document.querySelector('#proxy-frame');
     if (e) e.style.display = 'none';
 
-    history.pushState(null, '', location.pathname);
+    setTimeout(goState, 50);
+
+    function goState() {
+      if (g.history.state.as!==og) return;
+      g.history.back();
+
+      setTimeout(goState, 50);
+    }
 
     //location.href = '/';
   }
@@ -284,39 +316,46 @@ function MyApp({ Component, pageProps }: AppProps) {
     
     if (frame) frame.contentWindow.history.forward();
   }
+
+  if (g.window) {
+    g.window.__lud$theme = g.localStorage.getItem('__lud$theme')||'classic';
+  };
   
   return (
     <>
-      <div style={{
-        background: 'red',
-        border: '2px solid white',
-        zIndex: '2',
-        borderRadius: '3px',
-        color: 'white',
-        padding: '10px 20px',
-        position: 'absolute',
-        top: '10px',
-        left: '10px',
-        display: 'none',
-      }} id="online-offline-show">Offline, Proxies, Games may not work.</div>
-      <div id="proxy-frame" className={styles['game-div']}>
-        <div id={styles['game-header']}>
-          <div className="frame-icon" id={styles['frame-icon']}></div>
-          <div className="frame-title" id={styles['frame-title']}>Loading...</div>   
-
-          <div className="frame-close" onClick={closeFrame} id={styles['frame-close']}><IoClose /></div>
-          <div className="frame-reload" onClick={reloadFrame} id={styles['frame-reload']}><IoReload /></div>
-          <div className="frame-fullscr" onClick={fullScreen} id={styles['frame-full']}><IoExpand /></div>  
-
-          <div className="frame-for" onClick={forward} id={styles['frame-forward']}><IoArrowForward /></div>
-          <div className="frame-back" onClick={backward} id={styles['frame-back']}><IoArrowBack /></div>       
+      <div data-theme="classic">
+        <div style={{
+          background: 'red',
+          border: '2px solid white',
+          zIndex: '2',
+          borderRadius: '3px',
+          color: 'white',
+          padding: '10px 20px',
+          position: 'absolute',
+          top: '10px',
+          left: '10px',
+          display: 'none',
+        }} id="online-offline-show">Offline, Proxies, Games may not work.</div>
+        <div id="proxy-frame" className={styles['game-div']}>
+          <div id={styles['game-header']}>
+            <div className="frame-icon" id={styles['frame-icon']}></div>
+            <div className="frame-title" id={styles['frame-title']}>Loading...</div>   
+  
+            <div className="frame-close" onClick={closeFrame} id={styles['frame-close']}><IoClose /></div>
+            <div className="frame-reload" onClick={reloadFrame} id={styles['frame-reload']}><IoReload /></div>
+            <div className="frame-fullscr" onClick={fullScreen} id={styles['frame-full']}><IoExpand /></div>  
+  
+            <div className="frame-for" onClick={forward} id={styles['frame-forward']}><IoArrowForward /></div>
+            <div className="frame-back" onClick={backward} id={styles['frame-back']}><IoArrowBack /></div>       
+          </div>
+          <iframe src="/proxy.html" id={styles['game-frame']}></iframe>
         </div>
-        <iframe src="/proxy.html" id={styles['game-frame']}></iframe>
+        <Layout particles={g.particles}>
+          <Component {...pageProps} particles={''} ></Component>
+        </Layout>
+        <Script src="https://arc.io/widget.min.js#Uj7TAd9Q"></Script>
+        <Script src="/main.js"></Script>
       </div>
-      <Layout particles={g.particles}>
-        <Component {...pageProps} particles={''} ></Component>
-      </Layout>
-      <Script src="/main.js"></Script>
     </>
   )
 }
