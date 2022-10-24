@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start -p 1234",
+    "lint": "next lint",
+    "go": "npm run build && npm start"
   },
   "dependencies": {
     "@tomphttp/bare-server-node": "^1.0.2-beta-readme5",
