@@ -1,4 +1,4 @@
-# Ludi
+# Ludicrous
 The Ludicrous Web Proxy Site: Fast, Simple, Small. The flagship site of Ludicrous
 
 <img src="https://github.com/LudicrousDevelopment/Ludicrous/blob/main/example.jpeg?raw=true">
