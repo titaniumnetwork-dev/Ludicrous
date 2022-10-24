@@ -55,11 +55,22 @@
   font-size: 23px;
 }
 
-.main-page-about-init:hover, .main-page-apps-init:hover {
+.main-page-games-init {
+  width: 25px;
+  height: 25px;
+  color: var(--text-color);
+  position: absolute;
+  top: 10px;
+  left: 45px;
+  cursor: pointer;
+  font-size: 23px;
+}
+
+.main-page-about-init:hover, .main-page-apps-init:hover, .main-page-games-init:hover {
   transform: scale(1.1);
 }
 
-.main-page-about-init, .main-page-apps-init {
+.main-page-about-init, .main-page-apps-init, .main-page-games-init {
   transition: 0.15s ease;
 }
 

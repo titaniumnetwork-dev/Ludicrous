@@ -26,6 +26,75 @@ g.console.error = new Proxy(g.console.error, {
 function MyApp({ Component, pageProps }: AppProps) {
   g.openFrame = async function(url: any, sw: Boolean = false) {
     var el: any = document.getElementById(styles['game-frame']);
+
+    el.contentDocument.open();
+
+    el.contentDocument.write(`
+<html data-theme="dark">
+  <head>
+    <script>
+      document.documentElement.dataset.theme = localStorage.getItem('__lud$theme')||'dark';
+    </script>
+    <title>Loading...</title>
+    <style>
+      @import url('/font/index.css');
+
+      *[data-theme="light"] {
+        --page-bg: linear-gradient(-45deg, #747474, #4d5061, rgba(0 93 172));
+        --main-bg: #2467a5;
+        --text-color: white;
+      }
+  
+      *[data-theme="fiwfhgnwghr"] {
+        --page-bg: linear-gradient(-45deg,#d0d0d0,#87888e,#3770a0);
+        --main-bg: #4f86b9;
+        --text-color: white;
+      }
+      
+      *[data-theme="dark"] {
+        --page-bg: linear-gradient(-45deg,#000000,#000000,#114067);
+        --main-bg: #091b2c;
+        --text-color: white;
+      }
+      
+      *[data-theme="fracital"] {
+        --page-bg: linear-gradient(-45deg,#000,#222,#ff77fc);
+        --main-bg: #282828;
+        --text-color: #ff77fc;
+      }
+      
+      *[data-theme="illusive"] {
+        --page-bg: linear-gradient(-45deg,#000,#232323,#808080);
+        --main-bg: #181818;
+        --text-color: white;
+      }
+      
+      body, html {
+        margin: 0;
+        background: var(--page-bg);
+        background-size: 300% !important;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Roboto', sans-serif;
+        color: var(--text-color);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Please Wait</h1>
+    <script>
+      window.status = function(e) {
+        document.querySelector('h1').innerText = e;
+      }
+
+      history.replaceState(null, null, '/nolonger.html');
+    </script>
+  </body>
+</html>
+`);
     
     (document.getElementById('proxy-frame')||document.body).style.display = 'block';
 
@@ -33,7 +102,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     if (sw==false) el.contentDocument.querySelector('h1').innerText = 'Redirecting';
 
-    if (sw&&(el.contentWindow.status)) el.contentDocument.querySelector('h1').innerText = 'Registering ServiceWorkers';
+    if (sw) el.contentDocument.querySelector('h1').innerText = 'Registering ServiceWorkers';
     
     if ((g.ludicrous&&g.ludicrous.sw) && sw) {
       await g.ludicrous.sw();
@@ -74,11 +143,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         }
         
         await navigator.serviceWorker.register('/psw.js', {
-          scope: '/~/uv/',
+          scope: Config.config.Ultraviolet.prefix,
         });
 
         await navigator.serviceWorker.register('/psw.js', {
-          scope: '/~/dip/',
+          scope: Config.config.Dynamic.prefix,
         });
 
         return true;
@@ -146,8 +215,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   />
 
   if (g.localStorage) {
-    if (g.localStorage.getItem('__lud$prefix')) {
-      //Object.entries(Config.config).forEach([e,v]=>Config.config[e].prefix)
+    if (g.localStorage.getItem('__lud$proxy')) {
+      Config.proxy = g.localStorage.getItem('__lud$proxy');
     }
   }
 
@@ -283,18 +352,24 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   const closeFrame: any = function(e: any) {
-    var og = g.history.state.as;
+    var og = g.history.state?.as;
     g.history.back();
     var e: any = document.querySelector('#proxy-frame');
     if (e) e.style.display = 'none';
 
-    setTimeout(goState, 50);
+    setTimeout(goState, 100);
 
     function goState() {
+      if (!g.history.state) {
+        g.history.back();
+        
+        setTimeout(goState, 100);
+      }
+      
       if (g.history.state.as!==og) return;
       g.history.back();
 
-      setTimeout(goState, 50);
+      setTimeout(goState, 100);
     }
 
     //location.href = '/';
@@ -318,12 +393,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   if (g.window) {
-    g.window.__lud$theme = g.localStorage.getItem('__lud$theme')||'classic';
+    g.window.__lud$theme = g.localStorage.getItem('__lud$theme')||'dark';
   };
   
   return (
     <>
-      <div data-theme="classic">
+      <div data-theme="dark">
         <div style={{
           background: 'red',
           border: '2px solid white',

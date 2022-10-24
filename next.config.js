@@ -16,6 +16,11 @@ const nextConfig = withPWA({
     locales: ["en"],
     defaultLocale: "en",
   },
+  api: {
+    responseLimit: false,
+    externalResolver: true,
+    bodyParser: false,
+  },
   trailingSlash: true,
   async headers() {
     return [
@@ -27,7 +32,7 @@ const nextConfig = withPWA({
             value: '*',
           },
         ],
-      },
+      }
     ]
   },
   async rewrites() {

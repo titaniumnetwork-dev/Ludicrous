@@ -19,6 +19,5 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   req.url = '/bare/v1/'
-  console.log(req.method);
   Server.routeRequest(req, res);
 }

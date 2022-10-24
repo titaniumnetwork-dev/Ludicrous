@@ -5,6 +5,6 @@
   } 
   
   if ('serviceWorker' in navigator) {
-    setTimeout(`location.reload()`, 100);
+    setTimeout(`location.reload()`, 1000);
   }
 })();

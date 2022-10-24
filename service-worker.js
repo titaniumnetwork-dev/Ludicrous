@@ -8,12 +8,13 @@
   )
 })*/
 
-async function cacheHandler(event) {
+/*async function cacheHandler(event) {
+  if (new URL(event.request.url).origin!==location.origin) return await fetch(event.request);
   var { request } = event;
 
   var cache = await caches.open('pwa-assets');
 
-  if (request.method=='GET') cache.add(request);
+  if (request.method=='GET'&&(request.url.startsWith('https:')||request.url.startsWith('http:'))) cache.add(request);
 
   if (await cache.match(event.request)) return await cache.match(event.request);
 
@@ -24,6 +25,6 @@ self.addEventListener('fetch', function(event) {
   event.respondWith(
     cacheHandler(event)
   );
-});
+});*/
 
 self.__WB_MANIFEST

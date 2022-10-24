@@ -1,9 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { IoAppsOutline, IoSettingsOutline } from "react-icons/io5";
+import { IoAppsOutline, IoSettingsOutline, IoGameControllerOutline } from "react-icons/io5";
 import { FaGithub, FaEyeSlash, FaEye } from "react-icons/fa";
 import styles from '../styles/Home.module.css'
-import { loadFull } from "tsparticles";
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
@@ -24,8 +23,9 @@ if (global.window) {
         var url = (e.target.value).toString();
         
         if ('serviceWorker' in navigator) {
+          
         } else {
-          alert('ServiceWorker not supported');
+          alert('ServiceWorker not supported: Falling back to Corrosion proxy.');
         }
       }
     });
@@ -66,7 +66,7 @@ const Home: NextPage = ({ particles }: any) => {
   var win: any = global.window||{};
 
   if (global.window) {
-    var main: any = function() {
+    /*var main: any = function() {
       (document.getElementById(styles['main-page-init'])||document.body).style.opacity = '1';
 
       var inputEl: any = document.getElementById(styles["main-input"]);
@@ -86,8 +86,8 @@ const Home: NextPage = ({ particles }: any) => {
     });
   
     if (document.readyState=='complete') {
-      setTimeout(main, 1);
-    }
+      setTimeout(main, 10);
+    }*/
 
     //var form: any = document.getElementById(styles.form);
     //form.addEventListener('submit', formSubmit);
@@ -97,6 +97,19 @@ const Home: NextPage = ({ particles }: any) => {
     Router.prefetch('/options');
     Router.prefetch('/apps');
     Router.prefetch('/');
+
+    (document.getElementById(styles['main-page-init'])||document.body).style.opacity = '1';
+
+    var inputEl: any = document.getElementById(styles["main-input"]);
+    inputEl.oninput = omniBox;
+
+    if (localStorage.getItem('__lud$method')=='normal') {
+      const eyeOpen: any = document.getElementById('eye-open');
+      const eyeClosed: any = document.getElementById('eye-closed');
+    
+      eyeOpen.style.display = 'block';
+      eyeClosed.style.display = 'none';
+    }
   });
 
   const Apps: any = () => {
@@ -105,7 +118,18 @@ const Home: NextPage = ({ particles }: any) => {
       
       setTimeout(function() {
         win.particles = particles;
-        Router.replace('/apps')
+        Router.replace('/apps/')
+      }, 150);
+    }
+  }
+
+  const Games: any = () => {
+    if (global.window) {
+      (document.getElementById(styles['main-page-init'])||document.body).style.opacity = '0';
+      
+      setTimeout(function() {
+        win.particles = particles;
+        Router.replace('/games/')
       }, 150);
     }
   }
@@ -116,7 +140,7 @@ const Home: NextPage = ({ particles }: any) => {
       
       setTimeout(function() {
         win.particles = particles;
-        Router.replace('/options')
+        Router.replace('/options/')
       }, 150);
     }
   }
@@ -153,10 +177,6 @@ const Home: NextPage = ({ particles }: any) => {
       }).join('');
     }
   }
-  
-  const particlesInit: any = async (main: any) => {await loadFull(main)};
-
-  const particlesLoaded: any = () => {};
     
   return (
     <div className={styles.main}>
@@ -178,6 +198,7 @@ const Home: NextPage = ({ particles }: any) => {
         <div id={styles['main-page-content']}>
           
           <div onClick={Apps} className={styles["main-page-apps-init"]} id="apps-init"><IoAppsOutline /></div>
+          <div onClick={Games} className={styles["main-page-games-init"]} id="games-init"><IoGameControllerOutline /></div>
           <div className={styles["main-page-about-init"]} id="ab-cloak" onClick={Settings}><IoSettingsOutline /></div>
 
           <div id={styles["main-page-init"]}>

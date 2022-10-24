@@ -31,12 +31,22 @@ const Route: NextPage = ( { config }: any ): any => {
             }
 
             if (localStorage.getItem('__lud$method')=='normal') {
-              return location.href = "${config.config[config.proxy].prefix}"+enc(url).replace(/\\/$/g, '');
+              open("${config.config[config.proxy].prefix}"+enc(url).replace(/\\/$/g, ''));
+
+              return document.querySelector('.frame-close').click();
             }
 
             async function init() {if (window.openFrame) await window.openFrame("${config.config[config.proxy].prefix}"+enc(url).replace(/\\/$/g, ''), true);document.querySelector('iframe').removeEventListener('load', init)};
             await init();
-          } else window.history.back();
+          } else {
+            if (localStorage.getItem('__lud$method')=='normal') {
+              open("/api/~/corrosion/"+enc(url).replace(/\\/$/g, ''));
+
+              return document.querySelector('.frame-close').click();
+            }
+
+            window.openFrame("/api/~/corrosion/"+enc(url).replace(/\\/$/g, ''), true)
+          };
         })();
       `}
     </Script>

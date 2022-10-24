@@ -2,9 +2,8 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { IoAppsOutline, IoHomeOutline, IoChevronDown } from "react-icons/io5";
 import styles from '../styles/Settings.module.css'
-import { loadFull } from "tsparticles";
 import { useRouter } from 'next/router';
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 
 const Close: Function = () => {
   if (global.window) {
@@ -42,6 +41,8 @@ const aboutBlank: Function = (event: any) => {
 }
 
 const scrollListener: any = (event: any) => {
+  if (window.innerWidth<600) {return event.target.style.height = '75%'};
+  
   var el: any = document.getElementsByClassName(styles['down-chevron']);
   
   if (event.target.scrollTop) {event.target.style.height = '75%'} else event.target.style.height = '';
@@ -105,7 +106,7 @@ const Options: NextPage = ({particles}: any) => {
 
       var el: any = (document.getElementById('theme-select')||document.createElement('input'));
 
-      el.value = g.localStorage.getItem('__lud$theme')||'classic';
+      el.value = g.localStorage.getItem('__lud$theme')||'dark';
   
       el.onchange = ((e: any)=>{var b: any = document.querySelector('#theme-select');g.localStorage.setItem('__lud$theme', b.value);g.window.__lud$theme=b.value;b.value=b.value});
 
@@ -116,6 +117,10 @@ const Options: NextPage = ({particles}: any) => {
       var el3: any = (document.getElementById('stealth-select')||document.createElement('input'));
 
       el3.value = g.localStorage.getItem('__lud$method')||'stealth';
+
+      var el4: any = (document.getElementById('proxy-select')||document.createElement('input'));
+
+      el4.value = g.localStorage.getItem('__lud$proxy')||'Ultraviolet';
     }
     
     window.addEventListener('load', function(e: any) {
@@ -161,10 +166,6 @@ const Options: NextPage = ({particles}: any) => {
     }
   }
   
-  const particlesInit: any = async (main: any) => {await loadFull(main)};
-
-  const particlesLoaded: any = () => {};
-
   var win: any = global.window||{};
     
   return (
@@ -205,9 +206,6 @@ const Options: NextPage = ({particles}: any) => {
                 <h2>Theme</h2>
   
                 <select id="theme-select" className={styles['theme-select']}>
-                  <option value="classic"> 
-                    Classic
-                  </option>
                   <option value="light"> 
                     Light
                   </option>
@@ -266,6 +264,23 @@ const Options: NextPage = ({particles}: any) => {
                   </option>
                   <option value="normal"> 
                     Off
+                  </option>
+                </select>
+              </div>
+
+              <div className={styles['settings-box']}>
+                <h2>Proxy [Backend]</h2>
+  
+                <select id="proxy-select" className={styles['theme-select']} onChange={()=>{
+                  var el: any = document.getElementById('proxy-select');
+
+                  localStorage.setItem('__lud$proxy', el.value||'Ultraviolet');
+                }}>
+                  <option value="Ultraviolet"> 
+                    Ultraviolet
+                  </option>
+                  <option value="Dynamic"> 
+                    Dynamic
                   </option>
                 </select>
               </div>

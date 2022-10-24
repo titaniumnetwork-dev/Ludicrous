@@ -16,14 +16,14 @@ canvas {
   z-index: 1 !important;
 }
 
-*[data-theme="classic"] {
+*[data-theme="light"] {
   --page-bg: linear-gradient(-45deg, #747474, #4d5061, rgba(0 93 172));
   --main-bg: #2467a5;
   --text-color: white;
   --placeholder: #dedede;
 }
 
-*[data-theme="light"] {
+*[data-theme="hqfhqwuifxhmqgrwi"] {
   --page-bg: linear-gradient(-45deg,#d0d0d0,#87888e,#3770a0);
   --main-bg: #4f86b9;
   --text-color: white;
