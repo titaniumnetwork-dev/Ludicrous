@@ -5,10 +5,10 @@ The Ludicrous Web Proxy Site: Fast, Simple, Small. The flagship site of Ludicrou
 
 ## Installation
 
-```console
-git clone https://github.com/LudicrousDevelopment/Ludi
+```bash
+git clone https://github.com/LudicrousDevelopment/Ludicrous
 
-cd Ludi
+cd Ludicrous
 
 npm install
 
