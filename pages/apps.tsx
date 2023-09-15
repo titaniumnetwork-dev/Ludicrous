@@ -95,6 +95,15 @@ const aboutBlank: Function = (event: any) => {
 }
 
 const flip: any = function(el: any) {
+  for (var n = el; n.parentNode; n = n.parentNode) {
+    if (el.parentNode.tagName == "SVG") {
+      el = n;
+      break;
+    }
+
+    continue;
+  }
+
   if (el.style.transform) {
     el.style.transform = '';
   } else {
@@ -150,33 +159,21 @@ const Apps: NextPage = ({ apps, games, bookmarks, particles, origin }: any) => {
     Router.prefetch('/options');
     Router.prefetch('/apps');
     Router.prefetch('/');
-  });
 
-  if (global.window) {
-    var main: any = function() {
+    if (global.window) {
       (document.getElementById(styles['main-page-content'])||document.body).scrollTop = 1;
       (document.getElementById(styles['inside-content-scroller'])||document.body).style.opacity = '1';
-
-      console.log('e')
       
+      if (new URLSearchParams(location.search).get('origin')) {
+        if (g.openFrame) g.openFrame(new URLSearchParams(location.search).get('origin'), false);
+      }
+
       if (location.hash=='#credits') if(document.getElementById('creditshow')) {creditsHide({target:document.getElementById('creditshow')});};
       if (location.hash=='#games') if(document.getElementById('gameshow')) {gamesHide({target:document.getElementById('gameshow')});};
       if (location.hash=='#launch') if(document.getElementById('appshow')) {appsHide({target:document.getElementById('appshow')});};
       if (location.hash=='#exploits') if(document.getElementById('bookshow')) {exploitHide({target:document.getElementById('bookshow')});};
     }
-    
-    window.addEventListener('load', function(e: any) {
-      setTimeout(main, 1);
-    });
-  
-    if (document.readyState=='complete') {
-      setTimeout(main, 100);
-    }
-
-    if (new URLSearchParams(location.search).get('origin')) {
-      if (g.openFrame) g.openFrame(new URLSearchParams(location.search).get('origin'), false);
-    }
-  }
+  });
 
   const Home: any = () => {
     
@@ -309,7 +306,7 @@ const Apps: NextPage = ({ apps, games, bookmarks, particles, origin }: any) => {
             <h2>Credits <IoChevronDown className={styles['toggle-chevron']} onClick={creditsHide} id="creditshow"/></h2>
 
             <div id={styles['credits-over']}>
-              something
+              Me
             </div>
           </div>
         </div>

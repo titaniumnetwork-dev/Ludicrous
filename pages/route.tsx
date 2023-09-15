@@ -17,12 +17,12 @@ const Route: NextPage = ( { config }: any ): any => {
     <Script id="script-route">
       {`
         (async function() {
+          const params = new URL(location).searchParams;
           const engine = localStorage.getItem('__lud$engine')||'https://www.google.com/search?q=';
-          
+          var xor = {key: 2};
+          var enc = (e) => ${urlEnc.toString()}(e).replace(new RegExp("\\/$", "g"), '');          
+
           if ('serviceWorker' in navigator) {
-          
-            var xor = {key: 2};
-            var enc = (e) => ${urlEnc.toString()}(e).replace(new RegExp("\\/$", "g"), '');
 
             var url = new self.URLSearchParams(location.search).get('query');
 
@@ -36,7 +36,7 @@ const Route: NextPage = ( { config }: any ): any => {
               return document.querySelector('.frame-close').click();
             }
 
-            async function init() {if (window.openFrame) await window.openFrame("${config.config[config.proxy].prefix}"+enc(url).replace(/\\/$/g, ''), true);document.querySelector('iframe').removeEventListener('load', init)};
+            async function init() {if (window.openFrame) await window.openFrame("${config.config[config.proxy].prefix}"+enc(url).replace(/\\/$/g, ''), true, new URL(params.origin || location.href));document.querySelector('iframe').removeEventListener('load', init)};
             await init();
           } else {
             if (localStorage.getItem('__lud$method')=='normal') {
@@ -45,7 +45,7 @@ const Route: NextPage = ( { config }: any ): any => {
               return document.querySelector('.frame-close').click();
             }
 
-            window.openFrame("/api/~/corrosion/"+enc(url).replace(/\\/$/g, ''), true)
+            window.openFrame("/api/~/corrosion/"+enc(url).replace(/\\/$/g, ''), true, new URL(params.origin || location.href));
           };
         })();
       `}

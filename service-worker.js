@@ -3,7 +3,7 @@
 /*self.addEventListener('install', event => {
   event.waitUntil(
     caches.open('pwa-assets').then(cache=>{
-      (self.__WB_MANIFEST.map(e=>e.url)).forEach(e=>cache.add(e))
+      (self.__WB_MANIFES(T).map(e=>e.url)).forEach(e=>cache.add(e))
     })
   )
 })*/

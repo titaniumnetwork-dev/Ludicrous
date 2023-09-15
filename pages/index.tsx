@@ -4,7 +4,7 @@ import { IoAppsOutline, IoSettingsOutline, IoGameControllerOutline } from "react
 import { FaGithub, FaEyeSlash, FaEye } from "react-icons/fa";
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const g: any = global || {};
 
@@ -14,31 +14,6 @@ const Close: Function = () => {
     global.window.history.go(-(global.window.history.length-1));
     global.window.location.replace('https://www.google.com/webhp')
   }
-}
-
-if (global.window) {
-  window.onload = function() {
-    (document.querySelector('#'+styles["main-input"])||document.createElement('input')).addEventListener('keypress', (e: any) => {
-      if (e.key=='Enter') {
-        var url = (e.target.value).toString();
-        
-        if ('serviceWorker' in navigator) {
-          
-        } else {
-          alert('ServiceWorker not supported: Falling back to Corrosion proxy.');
-        }
-      }
-    });
-  }
-}
-
-const formSubmit: any = (e: any) => {
-  e.preventDefault();
-
-  var val: any = (document.getElementById(styles['main-input'])||document.createElement('input'));
-  val = val.value;
-
-  g.openFrame('/route?query='+(val));
 }
 
 const stealthOn: any = () => {
@@ -65,33 +40,7 @@ const Home: NextPage = ({ particles }: any) => {
   var Router = useRouter();
   var win: any = global.window||{};
 
-  if (global.window) {
-    /*var main: any = function() {
-      (document.getElementById(styles['main-page-init'])||document.body).style.opacity = '1';
-
-      var inputEl: any = document.getElementById(styles["main-input"]);
-      inputEl.oninput = omniBox;
-
-      if (localStorage.getItem('__lud$method')=='normal') {
-        const eyeOpen: any = document.getElementById('eye-open');
-        const eyeClosed: any = document.getElementById('eye-closed');
-      
-        eyeOpen.style.display = 'block';
-        eyeClosed.style.display = 'none';
-      }
-    }
-    
-    window.addEventListener('load', function(e: any) {
-      setTimeout(main, 1);
-    });
-  
-    if (document.readyState=='complete') {
-      setTimeout(main, 10);
-    }*/
-
-    //var form: any = document.getElementById(styles.form);
-    //form.addEventListener('submit', formSubmit);
-  }
+  const [ location, setLocation ] = useState<any>(win.location || {href: ''});
 
   useEffect(() => {
     Router.prefetch('/options');
@@ -146,16 +95,13 @@ const Home: NextPage = ({ particles }: any) => {
   }
 
   const omniBox: any = async (e: any) => {
-    if ((!e.inputType&&!e.data)&&(document.getElementById('defaults')!.innerHTML!=='<option value="https://discord.com">Discord</option><option value="https://youtube.com">Youtube</option><option value="https://reddit.com">Reddit</option><option value="https://play.geforcenow.com/mall">GeForce Now</option>')) {
-      var el: any = document.getElementById(styles['form']);
-      el.submit();
-      return false;
-    }
+    if (e.keyCode === 13) 
+      return (document.getElementById(styles.form) as HTMLFormElement)!.submit();
     
     var val: any = document.getElementById(styles["main-input"]);
     var value = val.value+'';
 
-    if (value==''&&!value) return document.getElementById('defaults')!.innerHTML='<option value="https://discord.com">Discord</option><option value="https://youtube.com">Youtube</option><option value="https://reddit.com">Reddit</option><option value="https://play.geforcenow.com/mall">GeForce Now</option>';
+    if (value==''&&!value) return document.getElementById('omnibox-container')!.innerHTML='';
     
     var req = await fetch('/api/bare/v2/', {
       method: 'GET',
@@ -168,13 +114,20 @@ const Home: NextPage = ({ particles }: any) => {
       }
     });
 
-    if (value==val.value) {
+    if (value === val.value) {
       var list = await req.json();
-      var datalist: any = document.getElementById('defaults');
+      var container: any = document.getElementById('omnibox-container');
 
-      datalist.innerHTML = list.map((entry: any) => {
-        return `<option value="${entry.phrase}" onclick="alert('hi')">${entry.phrase}</option>`
+      container.innerHTML = list.map((entry: any) => {
+        return `<div class="${styles['omnibox-entry']}">${entry.phrase}</div>`;
       }).join('');
+
+      container.querySelectorAll('.'+styles['omnibox-entry']).forEach((entry: any) => {
+        entry.addEventListener('click', () => {
+          val.value = entry.innerHTML;
+          val.parentNode.submit();
+        });
+      });
     }
   }
     
@@ -205,13 +158,15 @@ const Home: NextPage = ({ particles }: any) => {
             <h1 className={styles["main-title"]}><span>Ludicrous</span> <FaGithub style={{"cursor": "pointer"}} onClick={(e) => {window.open('https://github.com/ludicrousdevelopment/ludi');}} /></h1>
             <h2 className={styles["main-desc"]}>Surf the Unblo​cked Web</h2>
             <form method="GET" id={styles.form} action="/route">
-              <input name="query" id={styles["main-input"]} placeholder="Enter URL or Search Query" list="defaults" autoComplete="off" />
-              <datalist id="defaults" className={styles['list']}>
+              <input name="query" id={styles["main-input"]} onKeyDown={(event: any) => event.key == "Enter" ? (event.target as any)?.parentNode!.submit() : null} placeholder="Enter URL or Search Query" autoComplete="off" />
+              <input title="hidden" placeholder="hidden" style={{position: "absolute", left: "-1000000000000px"}} value={location.href} name="origin" readOnly />
+              <div id="omnibox-container" className={styles['omnibox-container']}></div>
+              { /*<datalist id="defaults" className={styles['list']}>
                 <option value="https://discord.com">Discord</option>
                 <option value="https://youtube.com">Youtube</option>
                 <option value="https://reddit.com">Reddit</option>
                 <option value="https://play.geforcenow.com/mall">GeForce Now</option>
-              </datalist>
+  </datalist> */ }
               <div id="eye-closed" className={styles["main-page-stealth-switch"]} onClick={stealthOff} title="stealth mode is on"><FaEyeSlash /></div>
               <div id="eye-open" style={{display:'none'}} className={styles["main-page-stealth-switch"]} onClick={stealthOn} title="stealth mode is off"><FaEye /></div>
             </form>

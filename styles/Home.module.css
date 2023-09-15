@@ -9,6 +9,47 @@
   letter-spacing: 1px;
 }
 
+.omnibox-container {
+  margin-top: 0px;
+  position: absolute;
+  width: 100%;
+  background: var(--main-bg);
+}
+
+.omnibox-entry {
+  width: calc(100% - 24px);
+  border: 3px solid white;
+  padding: 6px 10px;
+  border-bottom: 0 !important;
+  cursor: pointer;
+  color: white;
+  transition: 0.1s ease;
+  background: var(--main-bg);
+  font-size: 14px;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.omnibox-entry:first-of-type {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.omnibox-entry:last-of-type {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-bottom: 3px solid white !important;
+}
+
+.omnibox-entry:hover {
+  background: rgb(255, 255, 255, 0.05);
+}
+
+.omnibox-entry:active {
+  background: rgb(255, 255, 255, 0.1);
+}
+
 .main * {
   font-family: Roboto, sans-serif;
 }

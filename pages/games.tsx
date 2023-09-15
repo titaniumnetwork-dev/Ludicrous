@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { IoHomeOutline, IoSettingsOutline, IoChevronDown } from "react-icons/io5";
+import { IoHomeOutline, IoSettingsOutline, IoChevronDown, IoAppsOutline } from "react-icons/io5";
 import styles from '../styles/Apps.module.css'
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -90,26 +90,16 @@ const Games: NextPage = ({ apps, games, bookmarks, particles, origin }: any) => 
     Router.prefetch('/options');
     Router.prefetch('/apps');
     Router.prefetch('/');
-  });
 
-  if (global.window) {
-    var main: any = function() {
+    if (global.window) {
       (document.getElementById(styles['main-page-content'])||document.body).scrollTop = 1;
       (document.getElementById(styles['inside-content-scroller'])||document.body).style.opacity = '1';
-    }
-    
-    window.addEventListener('load', function(e: any) {
-      setTimeout(main, 1);
-    });
   
-    if (document.readyState=='complete') {
-      setTimeout(main, 1);
+      if (new URLSearchParams(location.search).get('origin')) {
+        if (g.openFrame) g.openFrame(new URLSearchParams(location.search).get('origin'), false);
+      }
     }
-
-    if (new URLSearchParams(location.search).get('origin')) {
-      if (g.openFrame) g.openFrame(new URLSearchParams(location.search).get('origin'), false);
-    }
-  }
+  });
 
   const Home: any = () => {
     
@@ -142,6 +132,23 @@ const Games: NextPage = ({ apps, games, bookmarks, particles, origin }: any) => 
       setTimeout(function() {
         win.particles = particles;
         Router.replace('/options');
+      }, 400);
+    }
+  }
+
+  const Apps: any = () => {
+    if (global.window) {
+      (document.getElementById(styles['main-page-content'])||document.documentElement).scrollTop = 0;
+
+      setTimeout(function() {
+        var node: any = ((document.getElementById(styles['main-page-content'])||document.documentElement).childNodes[2]);
+
+        node.style.opacity = '0';
+      }, 250);
+      
+      setTimeout(function() {
+        win.particles = particles;
+        Router.replace('/apps');
       }, 400);
     }
   }

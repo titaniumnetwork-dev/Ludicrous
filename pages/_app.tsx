@@ -23,9 +23,13 @@ g.console.error = new Proxy(g.console.error, {
   }
 })
 
-function MyApp({ Component, pageProps }: AppProps) {
-  g.openFrame = async function(url: any, sw: Boolean = false) {
+function Ludicrous({ Component, pageProps }: AppProps) {
+  g.openFrame = async function(url: any, sw: Boolean = false, origin: URL = new URL(location.href)) {
     var el: any = document.getElementById(styles['game-frame']);
+
+    if (origin && g.localStorage) {
+      g.localStorage.setItem('__lud$origin', origin.origin);
+    }
 
     el.contentDocument.open();
 
@@ -96,15 +100,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 </html>
 `);
     
-    (document.getElementById('proxy-frame')||document.body).style.display = 'block';
+    document.getElementById('proxy-frame')!.style.display = 'block';
 
-    if (el.getAttribute('src')!==('/proxy.html')) (document.getElementById(styles['game-frame'])||document.body).setAttribute('src', '/proxy.html');
+    if (el.getAttribute('src')!==('/proxy.html')) document.getElementById(styles['game-frame'])!.setAttribute('src', '/proxy.html');
 
     if (sw==false) el.contentDocument.querySelector('h1').innerText = 'Redirecting';
 
     if (sw) el.contentDocument.querySelector('h1').innerText = 'Registering ServiceWorkers';
     
-    if ((g.ludicrous&&g.ludicrous.sw) && sw) {
+    if (!navigator.serviceWorker.controller && (g.ludicrous&&g.ludicrous.sw) && sw) {
       await g.ludicrous.sw();
     } 
 
@@ -131,7 +135,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
     reload: (e: any) => {
       if (g.router) {
-        g.router.route()
+        let init = g.router.asPath;
+
+        return g.router.replace("/blank").then(
+          () => g.router.replace(init),
+        );
       }
 
       throw new Error('No Global Router Object Found');
@@ -319,24 +327,22 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     const frame: any = document.getElementById(styles['game-frame']);
 
-    frame.loads = -1;
+    frame.loads = 0;
     
     const frameLoad: any = function(e: any) {
       frame.loads++;
-      if (frame.loads==0) return;
       
       clearInterval(frame.interval);
       
       var title: any = document.querySelector('.frame-title');
       var icon: any = document.querySelector('.frame-icon');
 
-      title.innerText = frame.contentDocument.title||frame.contentWindow.location.href;
-      title.style.background;
+      title.innerText = frame.contentDocument.title || frame.contentWindow.location.href;
 
       frame.interval = setInterval(function() {
-        var expected = frame.contentDocument.title||frame.contentWindow.location.href;
+        var expected = frame.contentDocument.title || frame.contentWindow.location.href;
 
-        if (title.innerText==expected) return;
+        if (title.innerText === expected) return;
 
         title.innerText = expected;
       }, 500);
@@ -352,25 +358,16 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   const closeFrame: any = function(e: any) {
-    var og = g.history.state?.as;
-    g.history.back();
     var e: any = document.querySelector('#proxy-frame');
     if (e) e.style.display = 'none';
 
-    setTimeout(goState, 100);
+    var origin = new URL(localStorage.getItem('__lud$origin') || location.href);
 
-    function goState() {
-      if (!g.history.state) {
-        g.history.back();
-        
-        setTimeout(goState, 100);
-      }
-      
-      if (g.history.state.as!==og) return;
-      g.history.back();
-
-      setTimeout(goState, 100);
+    if (origin.origin === location.origin) {
+      return g.router.replace(origin.pathname);
     }
+
+    return g.location!.href = origin;
 
     //location.href = '/';
   }
@@ -383,6 +380,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const backward: any = function(e: any) {
     var frame: any = document.getElementById(styles['game-frame']);
     
+    if (frame.contentWindow.history.state) return false;
+
     if (frame) frame.contentWindow.history.back();
   }
 
@@ -428,11 +427,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Layout particles={g.particles}>
           <Component {...pageProps} particles={''} ></Component>
         </Layout>
-        <Script src="https://arc.io/widget.min.js#Uj7TAd9Q"></Script>
         <Script src="/main.js"></Script>
       </div>
     </>
   )
 }
 
-export default MyApp
+export default Ludicrous;
