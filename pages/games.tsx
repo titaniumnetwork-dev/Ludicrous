@@ -41,8 +41,8 @@ const gameClicked: any = function(event: any) {
 
   var app = el.getAttribute('ludicrous-launch-url');
 
-  if (g.openFrame) g.openFrame('/gfiles/html5/'+app+'/', false);
-  history.pushState(null, '', location.pathname+'?origin=/gfilesgfiles/html5/'+app+'/');
+  if (g.openFrame) g.openFrame('/gfiles/html5/'+app+'/', false, location.pathname);
+  history.pushState(null, '', location.pathname);
 }
 
 const upChevron: any = function() {
