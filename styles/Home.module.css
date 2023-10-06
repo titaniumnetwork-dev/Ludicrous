@@ -61,7 +61,7 @@
 
 #main-page-content {
   padding: 30px 50px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--page-border-color);
   border-radius: 6px;
   position: absolute;
   top: calc(50%);

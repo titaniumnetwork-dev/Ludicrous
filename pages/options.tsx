@@ -218,6 +218,9 @@ const Options: NextPage = ({particles}: any) => {
                   <option value="illusive"> 
                     Illusive
                   </option>
+                  <option value="contrast"> 
+                    Tron
+                  </option>
                 </select>
               </div>
 

@@ -1,10 +1,11 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { IoAppsOutline, IoSettingsOutline, IoGameControllerOutline } from "react-icons/io5";
+import { IoAppsOutline, IoSettingsOutline, IoGameControllerOutline, IoSearch, IoGlobe } from "react-icons/io5";
 import { FaGithub, FaEyeSlash, FaEye } from "react-icons/fa";
 import styles from '../styles/Home.module.css'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { renderToString } from 'react-dom/server'
 
 const g: any = global || {};
 
@@ -46,6 +47,36 @@ const Home: NextPage = ({ particles }: any) => {
     Router.prefetch('/options');
     Router.prefetch('/apps');
     Router.prefetch('/');
+
+    document.getElementById(styles.form)!.addEventListener('submit', (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+
+      var data = `?${Object.entries(Object.fromEntries(new FormData(e.target as HTMLFormElement).entries())).map((entry: any) => entry.join('=')).join('&')}`;
+
+      Router.push('/route'+data);
+    });
+
+    window.addEventListener('mousedown', (e) => {
+      var container: any = document.getElementById('omnibox-container');
+
+      if (!container) return;
+
+      if (e.target !== document.getElementById(styles["main-input"]) && e.target !== container && !container.contains(e.target)) {
+        container.style.display = "none";
+      }
+
+      if (e.target === document.getElementById(styles["main-input"])) {
+        container.style.display = "block";
+      }
+    });
+
+    document.getElementById('omnibox-container')!.querySelectorAll('.'+styles['omnibox-entry']).forEach((entry: any) => {
+      entry.addEventListener('click', () => {
+        (document.getElementById(styles["main-input"]) as HTMLInputElement)!.value = entry.querySelector('span')!.innerHTML;
+        (document.getElementById(styles["main-input"])!.parentNode as HTMLFormElement)!.requestSubmit();
+      });
+    });
 
     (document.getElementById(styles['main-page-init'])||document.body).style.opacity = '1';
 
@@ -96,12 +127,44 @@ const Home: NextPage = ({ particles }: any) => {
 
   const omniBox: any = async (e: any) => {
     if (e.keyCode === 13) 
-      return (document.getElementById(styles.form) as HTMLFormElement)!.submit();
+      return (document.getElementById(styles.form) as HTMLFormElement)!.requestSubmit();
     
     var val: any = document.getElementById(styles["main-input"]);
-    var value = val.value+'';
+    var value = val.value + '';
+    var container: any = document.getElementById('omnibox-container');
 
-    if (value==''&&!value) return document.getElementById('omnibox-container')!.innerHTML='';
+    if (value === '' && !value) {
+      container.innerHTML = [
+        {
+          phrase: 'https://discord.com'
+        },
+        {
+          phrase: 'https://www.youtube.com'
+        },
+        {
+          phrase: 'https://reddit.com'
+        },
+        {
+          phrase: 'https://twitter.com'
+        },
+        {
+          phrase: 'https://play.geforcenow.com/mall'
+        }
+      ].map((entry: any) => {
+        return `<div class="${styles['omnibox-entry']}">${renderToString(entry.phrase.match(/^http(s?):/) ? <IoGlobe style={{verticalAlign: '-2px'}} /> : <IoSearch style={{verticalAlign: '-2px'}} />)} <span>${entry.phrase}</span></div>`;
+      }).join('');
+
+      container.querySelectorAll('.'+styles['omnibox-entry']).forEach((entry: any) => {
+        entry.addEventListener('click', () => {
+          val.value = entry.querySelector('span')!.innerHTML;
+          val.parentNode.requestSubmit();
+        });
+      });
+
+      container.style.display = "block";
+
+      return false;
+    }
     
     var req = await fetch('/api/bare/v2/', {
       method: 'GET',
@@ -116,18 +179,19 @@ const Home: NextPage = ({ particles }: any) => {
 
     if (value === val.value) {
       var list = await req.json();
-      var container: any = document.getElementById('omnibox-container');
 
       container.innerHTML = list.map((entry: any) => {
-        return `<div class="${styles['omnibox-entry']}">${entry.phrase}</div>`;
+        return `<div class="${styles['omnibox-entry']}">${renderToString(entry.phrase.match(/^http(s?):/) ? <IoGlobe style={{verticalAlign: '-2px'}} /> : <IoSearch style={{verticalAlign: '-2px'}} />)} <span>${entry.phrase}</span></div>`;
       }).join('');
 
       container.querySelectorAll('.'+styles['omnibox-entry']).forEach((entry: any) => {
         entry.addEventListener('click', () => {
-          val.value = entry.innerHTML;
-          val.parentNode.submit();
+          val.value = entry.querySelector('span')!.innerHTML;
+          val.parentNode.requestSubmit();
         });
       });
+
+      container.style.display = "block";
     }
   }
     
@@ -155,18 +219,34 @@ const Home: NextPage = ({ particles }: any) => {
           <div className={styles["main-page-about-init"]} id="ab-cloak" onClick={Settings}><IoSettingsOutline /></div>
 
           <div id={styles["main-page-init"]}>
-            <h1 className={styles["main-title"]}><span>Ludicrous</span> <FaGithub style={{"cursor": "pointer"}} onClick={(e) => {window.open('https://github.com/ludicrousdevelopment/ludi');}} /></h1>
+            <h1 className={styles["main-title"]}><span>Ludicrous</span> <FaGithub style={{"cursor": "pointer"}} onClick={(e) => {window.open('https://github.com/TitaniumNetwork-Dev/Ludicrous');}} /></h1>
             <h2 className={styles["main-desc"]}>Surf the Unblo​cked Web</h2>
             <form method="GET" id={styles.form} action="/route">
-              <input name="query" id={styles["main-input"]} onKeyDown={(event: any) => event.key == "Enter" ? (event.target as any)?.parentNode!.submit() : null} placeholder="Enter URL or Search Query" autoComplete="off" />
+              <input name="query" id={styles["main-input"]} onKeyDown={(event: any) => event.key == "Enter" ? (event.target as any)?.parentNode!.requestSubmit() : null} placeholder="Enter URL or Search Query" autoComplete="off" />
               <input title="hidden" placeholder="hidden" style={{position: "absolute", left: "-1000000000000px"}} value={location.href} name="origin" readOnly />
-              <div id="omnibox-container" className={styles['omnibox-container']}></div>
-              { /*<datalist id="defaults" className={styles['list']}>
-                <option value="https://discord.com">Discord</option>
-                <option value="https://youtube.com">Youtube</option>
-                <option value="https://reddit.com">Reddit</option>
-                <option value="https://play.geforcenow.com/mall">GeForce Now</option>
-  </datalist> */ }
+              <div id="omnibox-container" style={{display: "none"}} className={styles['omnibox-container']}>
+                {
+                  [
+                    {
+                      phrase: 'https://discord.com'
+                    },
+                    {
+                      phrase: 'https://www.youtube.com'
+                    },
+                    {
+                      phrase: 'https://reddit.com'
+                    },
+                    {
+                      phrase: 'https://twitter.com'
+                    },
+                    {
+                      phrase: 'https://play.geforcenow.com/mall'
+                    }
+                  ].map((entry: any) => {
+                    return <div key={entry.phrase} className={styles['omnibox-entry']}>{ entry.phrase.match(/^http(s?):/) ? <IoGlobe style={{verticalAlign: '-2px'}} /> : <IoSearch style={{verticalAlign: '-2px'}} /> } <span>{ entry.phrase }</span></div>;
+                  })
+                }
+              </div>
               <div id="eye-closed" className={styles["main-page-stealth-switch"]} onClick={stealthOff} title="stealth mode is on"><FaEyeSlash /></div>
               <div id="eye-open" style={{display:'none'}} className={styles["main-page-stealth-switch"]} onClick={stealthOn} title="stealth mode is off"><FaEye /></div>
             </form>

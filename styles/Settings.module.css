@@ -8,21 +8,6 @@
   left: 0;
 }
 
-#main-page-content {
-  padding: 30px 50px;
-  border: 2px solid #ccc;
-  border-radius: 6px;
-  position: absolute;
-  top: calc(50%);
-  left: 50%;
-  height: 140px;
-  background: var(--main-bg);
-  width: 60%;
-  text-align: center;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-}
-
 .main-page-about-init {
   width: 25px;
   height: 25px;
@@ -81,7 +66,7 @@
 
 #main-page-content {
   padding: 30px 50px;
-  border: 2px solid #ccc;
+  border: 2px solid var(--page-border-color);
   border-radius: 6px;
   position: absolute;
   top: calc(50%);

@@ -4,7 +4,7 @@ import Config from '../config';
 import type { AppProps } from 'next/app';
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
-import { IoReload, IoClose, IoExpand, IoArrowBack, IoArrowForward } from 'react-icons/io5';
+import { IoReload, IoClose, IoExpand, IoArrowBack, IoArrowForward, IoOpenOutline } from 'react-icons/io5';
 import Script from 'next/script';
 import Layout from '../components/layout'
 import { useRouter } from 'next/router';
@@ -26,6 +26,8 @@ g.console.error = new Proxy(g.console.error, {
 function Ludicrous({ Component, pageProps }: AppProps) {
   g.openFrame = async function(url: any, sw: Boolean = false, origin: URL = new URL(location.href)) {
     var el: any = document.getElementById(styles['game-frame']);
+
+    if (!el.contentDocument) return false;
 
     if (origin && g.localStorage) {
       g.localStorage.setItem('__lud$origin', origin.origin);
@@ -116,6 +118,8 @@ function Ludicrous({ Component, pageProps }: AppProps) {
 
     setTimeout(function() {
       if (sw&&(el.contentWindow)) el.contentDocument.querySelector('h1').innerText = 'Redirecting';
+
+      if (!navigator.onLine) return el.contentDocument.querySelector('h1').innerText = 'Offline, Proxy no work :(';
       
       setTimeout(e=>(document.getElementById(styles['game-frame'])||document.body).setAttribute('src', url), 300);
     }, 250);
@@ -157,6 +161,8 @@ function Ludicrous({ Component, pageProps }: AppProps) {
         await navigator.serviceWorker.register('/psw.js', {
           scope: Config.config.Dynamic.prefix,
         });
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         return true;
       } else return false;
@@ -327,19 +333,23 @@ function Ludicrous({ Component, pageProps }: AppProps) {
 
     const frame: any = document.getElementById(styles['game-frame']);
 
-    frame.loads = 0;
-    
+    if (frame) frame.loads = 0;
+
     const frameLoad: any = function(e: any) {
-      frame.loads++;
+      if (frame) frame.loads++;
       
       clearInterval(frame.interval);
       
       var title: any = document.querySelector('.frame-title');
       var icon: any = document.querySelector('.frame-icon');
 
+      if (!frame.contentDocument) return setTimeout(frameLoad, 1000);
+
       title.innerText = frame.contentDocument.title || frame.contentWindow.location.href;
 
       frame.interval = setInterval(function() {
+        if (!frame.contentDocument) return clearInterval(frame.interval);
+
         var expected = frame.contentDocument.title || frame.contentWindow.location.href;
 
         if (title.innerText === expected) return;
@@ -348,7 +358,7 @@ function Ludicrous({ Component, pageProps }: AppProps) {
       }, 500);
     }
 
-    frame.onload = frameLoad;
+    if (frame) frame.onload = frameLoad;
   }
 
   const reloadFrame: any = function(e: any) {
@@ -391,6 +401,12 @@ function Ludicrous({ Component, pageProps }: AppProps) {
     if (frame) frame.contentWindow.history.forward();
   }
 
+  const newPage: any = function(e: any) {
+    var frame: any = document.getElementById(styles['game-frame']);
+    
+    if (frame) window.open(frame.contentWindow.location.href);
+  }
+
   if (g.window) {
     g.window.__lud$theme = g.localStorage.getItem('__lud$theme')||'dark';
   };
@@ -398,6 +414,7 @@ function Ludicrous({ Component, pageProps }: AppProps) {
   return (
     <>
       <div data-theme="dark">
+        <script async src="/data/index.js"></script>
         <div style={{
           background: 'red',
           border: '2px solid white',
@@ -409,7 +426,7 @@ function Ludicrous({ Component, pageProps }: AppProps) {
           top: '10px',
           left: '10px',
           display: 'none',
-        }} id="online-offline-show">Offline, Proxies, Games may not work.</div>
+        }} id="online-offline-show">Offline - Proxies and Games may not work.</div>
         <div id="proxy-frame" className={styles['game-div']}>
           <div id={styles['game-header']}>
             <div className="frame-icon" id={styles['frame-icon']}></div>
@@ -417,7 +434,8 @@ function Ludicrous({ Component, pageProps }: AppProps) {
   
             <div className="frame-close" onClick={closeFrame} id={styles['frame-close']}><IoClose /></div>
             <div className="frame-reload" onClick={reloadFrame} id={styles['frame-reload']}><IoReload /></div>
-            <div className="frame-fullscr" onClick={fullScreen} id={styles['frame-full']}><IoExpand /></div>  
+            <div className="frame-fullscr" onClick={fullScreen} id={styles['frame-full']}><IoExpand /></div>
+            <div className="frame-open" onClick={newPage} id={styles['frame-open']}><IoOpenOutline /></div>    
   
             <div className="frame-for" onClick={forward} id={styles['frame-forward']}><IoArrowForward /></div>
             <div className="frame-back" onClick={backward} id={styles['frame-back']}><IoArrowBack /></div>       

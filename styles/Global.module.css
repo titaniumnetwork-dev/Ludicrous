@@ -106,15 +106,34 @@
   transition: 0.15s ease;
 }
 
-#frame-close svg, #frame-reload svg, #frame-full svg, #frame-forward svg, #frame-back svg {
+#frame-open {
+  display: inline-flex;
+  color: var(--text-color);
+  align-items: center;
+  padding: 5px;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  float: right;
+  transform: translateY(-10px);
+  font-size: 20px;
+  border: 2px solid var(--text-color);
+  border-radius: 5px;
+  background: rgb(255, 255, 255, 0.05);
+  margin-right: 10px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+#frame-close svg, #frame-reload svg, #frame-full svg, #frame-forward svg, #frame-back svg, #frame-open svg {
   transition: 0.3s ease;
 }
 
-#frame-close:hover svg, #frame-reload:hover svg, #frame-full:hover svg, #frame-forward:hover svg, #frame-back:hover svg {
+#frame-close:hover svg, #frame-reload:hover svg, #frame-full:hover svg, #frame-forward:hover svg, #frame-back:hover svg, #frame-open:hover svg {
   transform: rotate(15deg);
 }
 
-#frame-close:hover, #frame-reload:hover, #frame-full:hover, #frame-forward:hover, #frame-back:hover {
+#frame-close:hover, #frame-reload:hover, #frame-full:hover, #frame-forward:hover, #frame-back:hover, #frame-open:hover {
   background: rgb(255, 255, 255, 0.1);
 }
 

@@ -21,6 +21,7 @@ canvas {
   --main-bg: #2467a5;
   --text-color: white;
   --placeholder: #dedede;
+  --page-border-color: #ccc;
 }
 
 *[data-theme="hqfhqwuifxhmqgrwi"] {
@@ -28,6 +29,7 @@ canvas {
   --main-bg: #4f86b9;
   --text-color: white;
   --placeholder: #dedede;
+  --page-border-color: #ccc;
 }
 
 *[data-theme="dark"] {
@@ -35,6 +37,7 @@ canvas {
   --main-bg: #091b2c;
   --text-color: white;
   --placeholder: #dedede;
+  --page-border-color: #ccc;
 }
 
 *[data-theme="fracital"] {
@@ -42,6 +45,7 @@ canvas {
   --main-bg: #282828;
   --text-color: #ff77fc;
   --placeholder: #dedede;
+  --page-border-color: #ccc;
 }
 
 *[data-theme="illusive"] {
@@ -49,4 +53,13 @@ canvas {
   --main-bg: #181818;
   --text-color: white;
   --placeholder: #dedede;
+  --page-border-color: #ccc;
+}
+
+*[data-theme="contrast"] {
+  --page-bg: linear-gradient(-45deg,#000,#000000,#000000);
+  --main-bg: #000000;
+  --text-color: rgb(111 177 221);
+  --placeholder: rgb(111 177 221);
+  --page-border-color: rgb(111 177 221);
 }
