@@ -13,6 +13,6 @@ cd Ludicrous
 npm install
 npm run build
 npm start
-
-# Open at: [http://localhost:1234](http://localhost:1234)
 ```
+
+Open at: [http://localhost:1234](http://localhost:1234)
