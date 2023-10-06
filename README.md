@@ -1,16 +1,18 @@
 # Ludicrous
 The Ludicrous Web Proxy Site: Fast, Simple, Small. The flagship site of Ludicrous
 
-<img src="https://github.com/LudicrousDevelopment/Ludicrous/blob/main/example.jpeg?raw=true">
+<img src="https://github.com/TitaniumNetwork-dev/Ludicrous/blob/main/example.jpeg?raw=true">
 
 ## Installation
 
 ```bash
-git clone https://github.com/LudicrousDevelopment/Ludicrous
+git clone https://github.com/TitaniumNetwork-dev/Ludicrous
 
 cd Ludicrous
 
 npm install
+npm run build
+npm start
 
-npm run go
+# Open at: [http://localhost:1234](http://localhost:1234)
 ```
