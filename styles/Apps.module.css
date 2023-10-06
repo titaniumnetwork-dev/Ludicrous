@@ -216,6 +216,10 @@
   transition: 0.25s ease;
 }
 
+.toggle-chevron path {
+  pointer-events: none;
+}
+
 .flip-chevron {
   transform: rotate(180deg);
 }
